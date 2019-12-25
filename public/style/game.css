@@ -1,16 +1,32 @@
 #screen {
     border: 5px solid #CCC;
-    padding: 0;
-    margin: auto;
-    display: block;
     position: absolute;
-    top: 0;
+    top:0;
     bottom: 0;
     left: 0;
     right: 0;
+    margin: auto;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     image-rendering: -moz-crisp-edges;
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
+    padding: 0;
+}
+#tittle {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    text-align: center;
+}
+#score-board {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    padding-bottom: 7%;
+    text-align: center;
+}
+#table {
+    float: left;
 }

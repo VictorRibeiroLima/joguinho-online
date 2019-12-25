@@ -1,12 +1,35 @@
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Jogo de corno do victor</title>
-        <link rel="stylesheet" type="text/css" href="style/game.css">
-        <script src="/socket.io/socket.io.js"></script>
-    </head>
-    <body>
-        <canvas id="screen" width="10" height="10"></canvas>
-        <script type="module" src="js/client.js"></script>
-    </body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Jogo de corno do victor</title>
+    <link rel="stylesheet" type="text/css" href="style/game.css" />
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <div id="tittle">
+      <h1>Jogo de corno do victor</h1>
+    </div>
+    <canvas id="screen" width="10" height="10"></canvas>
+    <div id="score-board">
+      <h2>Pontuação</h2>
+      <table id="table">
+        <tr>
+          <td>Victor</td>
+        </tr>
+        <tr>
+          <td>4</td>
+        </tr>
+      </table>
+      <table id="table">
+            <tr>
+              <td>Victor</td>
+            </tr>
+            <tr>
+              <td>4</td>
+            </tr>
+          </table>
+      
+    </div>
+    <script type="module" src="js/client.js"></script>
+  </body>
 </html>

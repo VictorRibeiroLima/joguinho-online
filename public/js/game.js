@@ -45,6 +45,7 @@ function createGame () {
   }
 
   function handlePlayerMovement (command) {
+    
     const player = state.players[command.player]
     const movementFunction = movements[command.keyPressed]
     if (movementFunction && state.players[command.player]) {
@@ -60,11 +61,11 @@ function createGame () {
     const playerId = command.playerId
     const playerX = command.playerX
       ? command.playerX
-      : Math.floor(Math.random() * state.screen.height)
+      : Math.floor(Math.random() * (state.screen.height + 1))
 
     const playerY = command.playerY
       ? command.playerY
-      : Math.floor(Math.random() * state.screen.width)
+      : Math.floor(Math.random() * (state.screen.width + 1))
 
     const points = command.points ? command.points : 0
     state.players[playerId] = {
@@ -92,7 +93,7 @@ function createGame () {
 
   function start () {
     const frequency = 5000
-    setInterval(addFruit, frequency)
+    //setInterval(addFruit, frequency)
   }
 
   function addFruit (command) {
@@ -105,12 +106,12 @@ function createGame () {
       fruitY = command.fruitY
     } else {
       fruitId = uuid()
-      fruitX = Math.floor(Math.random() * state.screen.height)
-      fruitY = Math.floor(Math.random() * state.screen.width)
+      fruitX = Math.floor(Math.random() * (state.screen.height + 1))
+      fruitY = Math.floor(Math.random() * (state.screen.width+1))
     }
-    state.fruits[fruitId]={
+    state.fruits[fruitId] = {
       x: fruitX,
-      y:fruitY
+      y: fruitY
     }
     command = {
       type: 'add-fruit',
