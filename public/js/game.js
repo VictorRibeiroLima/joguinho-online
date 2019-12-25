@@ -6,7 +6,10 @@ function createGame () {
     screen: { width: 9, height: 9 }
   }
   const observers = []
+  
+  const servers = []
 
+  let timerId
   const movements = {
     ArrowDown (player) {
       if (player.y < state.screen.width) {
@@ -40,6 +43,15 @@ function createGame () {
     observers.push(observerFunction)
   }
 
+  function registerServer (serverFunction) {
+    servers.push(serverFunction)
+  }
+
+  function notifyServers (command) {
+    for (const serverFunction of servers) {
+      serverFunction(command)
+    }
+  }
   function setState (newState) {
     Object.assign(state, newState)
   }
@@ -50,11 +62,22 @@ function createGame () {
     const movementFunction = movements[command.keyPressed]
     if (movementFunction && state.players[command.player]) {
       movementFunction(player)
-      if (checkCollision(player)) {
-        state.players[command.player].points += 1
+      if (checkCollision(command)) {
+        
       }
     }
     notifyAll(command)
+  }
+
+  function handlePlayerPoints (command){
+    state.players[command.player].points += 1
+    if(state.players[command.player].points >= 10){
+      command = {
+        tyṕe: 'end-game',
+        winner: command.player
+      }
+      notifyServers(command)
+    }
   }
 
   function addPlayer (command) {
@@ -68,19 +91,35 @@ function createGame () {
       : Math.floor(Math.random() * (state.screen.width + 1))
 
     const points = command.points ? command.points : 0
+    const nick = command.nick? command.nick: 'net ruim kkk'
     state.players[playerId] = {
       x: playerX,
       y: playerY,
-      points: points
+      points: points,
+      nick: nick
     }
     command = {
       type: 'add-player',
       playerId: playerId,
       playerX: playerX,
       playerY: playerY,
-      points: points
+      points: points,
+      nick: nick
     }
     notifyAll(command)
+  }
+
+  function changeNick (command) {
+    const playerId = command.playerId
+    const nick = command.nick
+    state.players[playerId].nick = nick
+    command = {
+      type: 'change-nick',
+      playerId: playerId,
+      nick: nick
+    }
+    notifyAll(command)
+
   }
 
   function removePlayer (command) {
@@ -93,7 +132,11 @@ function createGame () {
 
   function start () {
     const frequency = 5000
-    //setInterval(addFruit, frequency)
+    timerId = setInterval(addFruit, frequency)
+  }
+
+  function stop () {
+    clearInterval(timerId)
   }
 
   function addFruit (command) {
@@ -130,12 +173,12 @@ function createGame () {
     })
   }
 
-  function checkCollision (player) {
+  function checkCollision (command) {
     for (const fruitId in state.fruits) {
       const fruit = state.fruits[fruitId]
-      if (player.x === fruit.x && player.y === fruit.y) {
+      if (state.players[command.player].x === fruit.x && state.players[command.player].y === fruit.y) {
         removeFruit({ fruitId: fruitId })
-        return true
+        handlePlayerPoints(command)
       }
     }
   }
@@ -148,7 +191,10 @@ function createGame () {
     handlePlayerMovement,
     setState,
     subscribe,
-    start
+    changeNick,
+    start,
+    registerServer,
+    stop
   }
 }
 
